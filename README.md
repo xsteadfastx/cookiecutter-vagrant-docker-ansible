@@ -1,0 +1,1 @@
+# cookiecutter-vagrant-docker-ansible

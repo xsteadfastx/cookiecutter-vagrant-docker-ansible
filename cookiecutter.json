@@ -1,0 +1,5 @@
+{
+	"role_name": "my-nice-project",
+	"docker_baseimage": "32bit/ubuntu:14.04",
+	"ubuntu_release_name": "trusty"
+}

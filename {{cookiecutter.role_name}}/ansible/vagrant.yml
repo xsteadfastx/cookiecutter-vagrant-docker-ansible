@@ -1,0 +1,23 @@
+{% raw %}---
+- hosts: all
+
+  tasks:
+
+    - name: install deps
+      apt:
+        name={{ item }}
+        state=present
+      with_items:
+        - git
+        - ansible
+      sudo: yes
+
+    - name: clone batcave
+      git:
+        repo=https://github.com/xsteadfastx/batcave.git
+        dest=~/batcave
+
+    - name: run batcave
+      command:
+        ansible-playbook -i hosts site.yml --skip-tags "x11" -c local
+        chdir=~/batcave{% endraw %}

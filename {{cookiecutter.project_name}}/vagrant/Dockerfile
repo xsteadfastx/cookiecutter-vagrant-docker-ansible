@@ -4,7 +4,11 @@ RUN apt-get update \
     && apt-get install -y \
         software-properties-common \
         python-software-properties \
-    && add-apt-repository "deb http://archive.ubuntu.com/ubuntu {{cookiecutter.ubuntu_release_name}} universe" \
+    {% if '14.04' in cookiecutter.docker_baseimage %}
+    && add-apt-repository "deb http://archive.ubuntu.com/ubuntu trusty universe" \
+    {% elif '12.04' in cookiecutter.docker_baseimage %}
+    && add-apt-repository "deb http://archive.ubuntu.com/ubuntu precise universe" \
+    {% endif %}
     && apt-get update \
     && apt-get install -y \
         openssh-server \

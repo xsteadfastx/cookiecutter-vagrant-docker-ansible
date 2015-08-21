@@ -3,6 +3,5 @@
 	"email": "marvin@xsteadfastx.org",
 	"project_name": "my-vagrant-docker-project",
 	"project_short_description": "this is my nice vagrant docker project",
-	"docker_baseimage": "32bit/ubuntu:14.04",
-	"ubuntu_release_name": "trusty"
+	"docker_baseimage": "32bit/ubuntu:14.04"
 }

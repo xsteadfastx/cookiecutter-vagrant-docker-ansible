@@ -10,7 +10,7 @@
       with_items:
         - git
         - ansible
-      sudo: yes
+      become: yes
 
     - name: clone batcave
       git:
@@ -19,5 +19,5 @@
 
     - name: run batcave
       command:
-        ansible-playbook -i hosts site.yml --skip-tags "x11" -c local
+        ansible-playbook -i hosts base.yml -c local
         chdir=~/batcave{% endraw %}

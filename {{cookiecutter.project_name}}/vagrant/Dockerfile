@@ -1,25 +1,28 @@
 FROM {{cookiecutter.docker_baseimage}}
 
-RUN apt-get update \
-    && apt-get install -y \
-        software-properties-common \
-        python-software-properties \
-    {% if '14.04' in cookiecutter.docker_baseimage %}
-    && add-apt-repository "deb http://archive.ubuntu.com/ubuntu trusty universe" \
-    {% elif '12.04' in cookiecutter.docker_baseimage %}
-    && add-apt-repository "deb http://archive.ubuntu.com/ubuntu precise universe" \
-    {% endif %}
-    && apt-get update \
-    && apt-get install -y \
-        openssh-server \
-        supervisor
+ENV LANG C.UTF-8
+RUN locale-gen de_DE.UTF-8
 
-RUN mkdir -p /var/run/sshd
-RUN chmod 0755 /var/run/sshd
+RUN apt-get update \
+ && apt-get install -y \
+    software-properties-common \
+    python-software-properties \
+ {% if '14.04' in cookiecutter.docker_baseimage %}
+ && add-apt-repository "deb http://archive.ubuntu.com/ubuntu trusty universe" \
+ {% elif '12.04' in cookiecutter.docker_baseimage %}
+ && add-apt-repository "deb http://archive.ubuntu.com/ubuntu precise universe" \
+ {% endif %}
+ && apt-get update \
+ && apt-get install -y \
+    openssh-server \
+    supervisor
+
+# SSH
+RUN mkdir -p /var/run/sshd \
+ && chmod 0755 /var/run/sshd
 
 # Create and configure vagrant user
 RUN useradd --create-home -s /bin/bash vagrant
-WORKDIR /home/vagrant
 
 # Configure SSH access
 RUN mkdir -p /home/vagrant/.ssh
@@ -28,8 +31,8 @@ RUN chown -R vagrant: /home/vagrant/.ssh
 RUN echo -n 'vagrant:vagrant' | chpasswd
 
 # Enable passwordless sudo for the "vagrant" user
-RUN echo 'vagrant ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/vagrant
-RUN chmod 0440 /etc/sudoers.d/vagrant
+RUN echo 'vagrant ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/vagrant \
+ && chmod 0440 /etc/sudoers.d/vagrant
 
 # Supervisor
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
